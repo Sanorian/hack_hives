@@ -1,4 +1,6 @@
-CREATE TABLE Videos (
-    ID
-    Description
+CREATE TABLE Video (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Path TEXT UNIQUE NOT NULL,
+    Description TEXT,
+    Image TEXT NOT NULL
 );

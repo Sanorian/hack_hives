@@ -1,0 +1,22 @@
+services:
+    api:
+        build: .
+        ports:
+            - ""
+    db:
+        image: postgres:latest
+        environment:
+            POSTGRES_USER: "videos_user"
+            POSTGRES_PASSWORD: "videos_password"
+            POSTGRES_DB: "videos"
+        volumes:
+            - db-data:/var/lib/postgresql/data
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Указываем новое имя файла init.sql
+        ports:
+            - "5432:5432"
+volumes:
+  db-data:
+
+networks:
+  api_network:
+    driver: bridge
