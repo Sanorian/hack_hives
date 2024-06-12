@@ -1,8 +1,11 @@
 services:
     api:
-        build: .
+        build: ./
         ports:
-            - ""
+            - "80:8080"
+    networks:
+        - api_network
+
     db:
         image: postgres:latest
         environment:
@@ -11,9 +14,12 @@ services:
             POSTGRES_DB: "videos"
         volumes:
             - db-data:/var/lib/postgresql/data
-            - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Указываем новое имя файла init.sql
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
         ports:
             - "5432:5432"
+        networks:
+            - api_network
+
 volumes:
   db-data:
 
