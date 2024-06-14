@@ -6,5 +6,7 @@ CREATE TABLE Video (
     -- описание видео
     Description TEXT DEFAULT '',
     -- текстовый образ видео
-    Image TEXT NOT NULL
+    Image TEXT NOT NULL,
+    -- дата загрузки
+    Upload_date timestamp not null default CURRENT_TIMESTAMP
 );

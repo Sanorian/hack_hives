@@ -1,7 +1,7 @@
 from flask import Flask, request, send_from_directory
-import psycopg2
 import os
 import waitress
+from searching import Searcher
 
 app = Flask(
   __name__,
@@ -18,15 +18,12 @@ def search():
   try:
     # q = "футбольная команда Мадрида"
     question = request.args.get("q")
-    with psycopg2.connect(dbname='videos', user='videos_user', password='videos_password', host='db') as conn:
-      cursor = conn.cursor()
-      # алгоритм поиска
-      query = ""
-      cursor.execute(query)
-      response = {"videos": cursor.fetchall()}
-  except Exception:
-    print(str(sys.exc_info()[1]))
-    response = {"error": str(sys.exc_info()[1])}
+    s = Searcher()
+    s.execute_search_query(s.create_query(question))
+    response = {"videos": cursor.fetchall()}
+  except Exception as e:
+    print(e)
+    response = {"error": str(e)}
   return json.dumps(response)
 
 @app.route("/upload", methods=['POST'])
@@ -34,8 +31,9 @@ def upload_video():
   try:
     response = Video.upload(FlaskAdapter(request),"/videos/")
     # логика для обработки видео
-  except Exception:
-    response = {"error": str(sys.exc_info()[1])}
+  except Exception as e:
+    print(e)
+    response = {"error": str(e)}
   return json.dumps(response)
 
 if __name__ == "__main__":
