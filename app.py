@@ -17,20 +17,20 @@ if not os.path.exists(publicDirectory):
 def search():
   try:
     # q = "футбольная команда Мадрида"
-    question = request.args.get("q")
+    question = request.args.get("text")
     s = Searcher()
-    s.execute_search_query(s.create_query(question))
-    response = {"videos": cursor.fetchall()}
+    response = {"videos": s.execute_search_query(s.create_query(question))}
   except Exception as e:
     print(e)
     response = {"error": str(e)}
   return json.dumps(response)
 
-@app.route("/upload", methods=['POST'])
+@app.route("/index", methods=['POST'])
 def upload_video():
   try:
-    response = Video.upload(FlaskAdapter(request),"/videos/")
-    # логика для обработки видео
+    data = request.form.to_dict(flat=False)
+    description = data.description
+    link = data.link
   except Exception as e:
     print(e)
     response = {"error": str(e)}
